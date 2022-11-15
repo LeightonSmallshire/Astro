@@ -1,0 +1,35 @@
+{
+	"name": "C++",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+    "shutdownAction": "stopContainer",
+
+    // please for the love of god microsoft, please stop doing stupid shit
+    // https://stackoverflow.com/questions/54524747/connect-to-x11-server-from-docker-without-xhost-but-with-xauth
+    "runArgs": [
+        "--network=host" // network_mode: "host"
+    ],
+    "mounts": [ // volumes:
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",  // - /tmp/.X11-unix:/tmp/.X11-unix
+        "source=${localEnv:HOME}/.Xauthority,target=/root/.Xauthority,type=bind,consistency=cached" // - ~/.Xauthority:/root/.Xauthority
+    ],
+    "containerEnv": { // environment:
+        "DISPLAY": "${localEnv:DISPLAY}" // DISPLAY: $DISPLAY
+    }
+    
+	// Features to add to the dev container. More info: https://containers.dev/implementors/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "gcc -v",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
